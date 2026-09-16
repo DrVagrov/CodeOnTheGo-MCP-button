@@ -49,9 +49,9 @@ jobs:
           # Local build mode downloads public debug assets over HTTPS. CI mode
           # would require the upstream project's private SCP credentials.
           if GITHUB_ACTIONS=false flox activate -d flox/local -- ./gradlew :app:assembleV8Debug --no-daemon --parallel --max-workers=4 > mcp-build.log 2>&1; then
-            tail -n 40 mcp-build.log
+            tail -c 20000 mcp-build.log | tail -n 40
           else
-            tail -n 250 mcp-build.log
+            tail -c 100000 mcp-build.log | tail -n 250
             exit 1
           fi
 
