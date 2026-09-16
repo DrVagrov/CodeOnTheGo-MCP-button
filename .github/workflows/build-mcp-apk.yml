@@ -48,12 +48,22 @@ jobs:
         run: |
           # Local build mode downloads public debug assets over HTTPS. CI mode
           # would require the upstream project's private SCP credentials.
-          if GITHUB_ACTIONS=false flox activate -d flox/local -- ./gradlew :app:assembleV8Debug --no-daemon --parallel --max-workers=4 > mcp-build.log 2>&1; then
+          # AGP's debug keystore validation hits a missing BouncyCastle class
+          # on hosted runners. The APK signature is checked explicitly below.
+          if GITHUB_ACTIONS=false flox activate -d flox/local -- ./gradlew :app:assembleV8Debug -x :app:validateSigningV8Debug --no-daemon --parallel --max-workers=4 --stacktrace > mcp-build.log 2>&1; then
             tail -c 20000 mcp-build.log | tail -n 40
           else
             tail -c 100000 mcp-build.log | tail -n 250
             exit 1
           fi
+
+      - name: Verify debug APK signature
+        run: |
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/v8/debug/*.apk)
+          test "${#apks[@]}" -eq 1
+          sdk_root="${ANDROID_HOME:-$HOME/Android/Sdk}"
+          "$sdk_root/build-tools/36.0.0/apksigner" verify --verbose --print-certs "${apks[0]}"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
