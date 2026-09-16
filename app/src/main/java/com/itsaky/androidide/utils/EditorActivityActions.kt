@@ -41,6 +41,7 @@ import com.itsaky.androidide.actions.etc.FindAction
 import com.itsaky.androidide.actions.etc.FindInFileAction
 import com.itsaky.androidide.actions.etc.FindInProjectAction
 import com.itsaky.androidide.actions.etc.LaunchAppAction
+import com.itsaky.androidide.actions.etc.StartMcpAction
 import com.itsaky.androidide.actions.file.CloseAllFilesAction
 import com.itsaky.androidide.actions.file.CloseFileAction
 import com.itsaky.androidide.actions.file.CloseOtherFilesAction
@@ -90,6 +91,7 @@ class EditorActivityActions {
 			registry.registerAction(ProjectSyncAction(context, order++))
 			registry.registerAction(DebugAction(context, order++))
 			registry.registerAction(RunTasksAction(context, order++))
+			registry.registerAction(StartMcpAction(context, order++))
 			registry.registerAction(UndoAction(context, order++))
 			registry.registerAction(RedoAction(context, order++))
 			registry.registerAction(SaveFileAction(context, order++))

@@ -50,6 +50,7 @@ import com.itsaky.androidide.actions.ActionItem
 import com.itsaky.androidide.actions.ActionItem.Location.EDITOR_TOOLBAR
 import com.itsaky.androidide.actions.ActionsRegistry.Companion.getInstance
 import com.itsaky.androidide.actions.build.QuickRunAction
+import com.itsaky.androidide.actions.etc.StartMcpAction
 import com.itsaky.androidide.actions.internal.DefaultActionsRegistry
 import com.itsaky.androidide.activities.PluginManagerActivity
 import com.itsaky.androidide.activities.projectsRoot
@@ -746,8 +747,8 @@ open class EditorHandlerActivity :
 		content.projectActionsToolbar.clearMenu()
 
 		// Sort by (order, id) so a plugin's ToolbarAction.order positions its icon among the
-		// built-in actions. The 13 built-ins are registered with contiguous order 0..12, so
-		// this is a visual no-op for them.
+		// built-in actions. Built-ins use contiguous order values, so this is a visual no-op
+		// for them.
 		val actions =
 			getInstance()
 				.getActions(EDITOR_TOOLBAR)
@@ -842,6 +843,10 @@ open class EditorHandlerActivity :
 
 				"ide.editor.build.runTasks" -> {
 					string.cd_toolbar_run_gradle_tasks
+				}
+
+				StartMcpAction.ID -> {
+					string.cd_toolbar_start_mcp
 				}
 
 				"ide.editor.code.text.undo" -> {

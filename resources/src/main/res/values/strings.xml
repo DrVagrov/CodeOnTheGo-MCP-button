@@ -1139,6 +1139,7 @@
 	<string name="cd_toolbar_sync_project">Sync project</string>
 	<string name="cd_toolbar_start_debugger">Start debugger</string>
 	<string name="cd_toolbar_run_gradle_tasks">Run Gradle tasks</string>
+	<string name="cd_toolbar_start_mcp">Start local MCP connection</string>
 	<string name="cd_toolbar_undo">Undo</string>
 	<string name="cd_toolbar_redo">Redo</string>
 	<string name="cd_toolbar_save">Save</string>
@@ -1149,6 +1150,8 @@
 	<string name="cd_toolbar_launch_app">Launch app</string>
 	<string name="cd_toolbar_disconnect_log_senders">Disconnect log senders</string>
 	<string name="cd_toolbar_image_to_layout">Image to layout</string>
+	<string name="action_start_mcp">Start MCP</string>
+	<string name="error_start_mcp">Unable to start MCP: %1$s</string>
 
 	<!-- Drawer toggle content descriptions -->
 	<string name="cd_drawer_open">Open project menu</string>
@@ -1741,4 +1744,3 @@
 	<string name="cd_outline_kind_property">Property</string>
 	<string name="cd_outline_kind_element">Element</string>
 </resources>
-
