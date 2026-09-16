@@ -1,0 +1,59 @@
+name: Build MCP debug APK
+
+on:
+  push:
+    branches:
+      - community/boutton-implemented
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      INCLUDE_LLAMA_ASSETS: "false"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: flox/install-flox-action@v2
+
+      # The fork has no production Firebase credentials. This local-only project
+      # metadata satisfies the Google Services plugin for a debug APK.
+      - name: Configure debug Firebase metadata
+        run: |
+          cat > app/google-services.json <<'JSON'
+          {
+            "project_info": {
+              "project_number": "123456789012",
+              "project_id": "code-on-the-go-local-build"
+            },
+            "client": [{
+              "client_info": {
+                "mobilesdk_app_id": "1:123456789012:android:0000000000000000",
+                "android_client_info": {
+                  "package_name": "com.itsaky.androidide"
+                }
+              },
+              "api_key": [{"current_key": "local-build-placeholder"}]
+            }],
+            "configuration_version": "1"
+          }
+          JSON
+
+      - name: Build arm64 debug APK
+        run: |
+          # Local build mode downloads public debug assets over HTTPS. CI mode
+          # would require the upstream project's private SCP credentials.
+          GITHUB_ACTIONS=false flox activate -d flox/local -- ./gradlew :app:assembleV8Debug --no-daemon --parallel --max-workers=4
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-on-the-go-mcp-v8-debug
+          path: app/build/outputs/apk/v8/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
