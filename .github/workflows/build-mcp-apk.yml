@@ -44,6 +44,14 @@ jobs:
           }
           JSON
 
+      - name: Create local debug keystore
+        run: |
+          mkdir -p "$HOME/.config/.android"
+          keytool -genkeypair -keystore "$HOME/.config/.android/debug.keystore" \
+            -storetype JKS -alias androiddebugkey -storepass android -keypass android \
+            -keyalg RSA -keysize 2048 -validity 3650 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Build arm64 debug APK
         run: |
           # Local build mode downloads public debug assets over HTTPS. CI mode
